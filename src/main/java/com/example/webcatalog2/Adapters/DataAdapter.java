@@ -54,8 +54,8 @@ public class DataAdapter {
         return 0;
     }
 
-    public static int saveFile(String title, String author, String key, String date){
-        return dbHandler.addArticle(new Article(title, author, key, date));
+    public static int saveFile(String title, String author, String key, String date, String id){
+        return dbHandler.addArticle(new Article(title, author, key, date, id));
     }
 
     public static int getLinesCount(String page, String title, String author, String key, String date) {

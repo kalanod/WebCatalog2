@@ -8,20 +8,30 @@ public class Article {
     String title;
     String keyWords;
     String date;
+    String owner;
 
-    public Article(int id, String title, String author, String keyWords, String date) {
+    public Article(int id, String title, String author, String keyWords, String date, String owner) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.keyWords = keyWords;
         this.date = date;
+        this.owner = owner;
     }
 
+    public Article(String title, String author, String keyWords, String date, String owner) {
+        this.author = author;
+        this.title = title;
+        this.keyWords = keyWords;
+        this.date = date;
+        this.owner = owner;
+    }
     public Article(String title, String author, String keyWords, String date) {
         this.author = author;
         this.title = title;
         this.keyWords = keyWords;
         this.date = date;
+        this.owner = "Anonimus";
     }
 
     public int getId() {
@@ -55,5 +65,9 @@ public class Article {
     @Override
     public int hashCode() {
         return Objects.hash(author, title, keyWords, date);
+    }
+
+    public String getOwner() {
+        return owner;
     }
 }

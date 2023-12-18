@@ -1,6 +1,8 @@
 <%@ page import="com.example.webcatalog2.Adapters.DataAdapter" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="com.example.webcatalog2.Model.Article" %>
+<%@ page import="com.example.webcatalog2.Adapters.UserAdapter" %>
+<%@ page import="com.example.webcatalog2.db.User" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -51,6 +53,9 @@
         </div>
     </div>
 </div>
+<%
+    UserAdapter userAdapter = new UserAdapter();
+    if (userAdapter.isAuthorized((User) request.getSession().getAttribute("User"))) {%>
 <div class="controls">
     <!-- Modal -->
 
@@ -157,7 +162,22 @@
         <%}%>
     </ul>
 </nav>
+<%} else {%>
 
+<form class="row g-3" action="${pageContext.request.contextPath}/login" method="post">
+    <div class="col-auto">
+        <input type="text" class="form-control" name="username" id="usenameInput" placeholder="">
+        <label for="usenameInput">Username</label>
+    </div>
+    <div class="col-auto">
+        <input type="text" class="form-control" name="password" id="passwordInput" placeholder="">
+        <label for="passwordInput">password</label>
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="login close btn btn-primary">Добавить</button>
+    </div>
+</form>
+<%}%>
 <script src="js/jquery-3.7.1.min.js"></script>
 <script>
     <jsp:include page="js/index.js"/>

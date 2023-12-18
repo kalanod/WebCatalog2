@@ -28,8 +28,8 @@
     <h2>Название статьи: <%=article.getTitle()%></h2>
     <h2 id="author">Автор статьи: <%=article.getAuthor()%></h2>
     <h2 class="date">Год: <%=article.getDate()%></h2>
-    <h2 class="keyWords">Ключевые слова: <%=article.getKeyWords()%>
-    </h2>
+    <h2 class="keyWords">Ключевые слова: <%=article.getKeyWords()%></h2>
+    <h2 class="keyWords">Владелец: <%=article.getOwner()%>
     <a href="<%=request.getContextPath()%>/download?id=<%=request.getParameter("id")%>"
        class="btn btn-primary">скачать</a>
 </div>

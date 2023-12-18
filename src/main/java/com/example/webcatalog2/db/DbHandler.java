@@ -75,7 +75,8 @@ public class DbHandler {
                         resultSet.getString("title"),
                         resultSet.getString("author"),
                         resultSet.getString("key_"),
-                        resultSet.getString("date_")));
+                        resultSet.getString("date_"),
+                        resultSet.getString("owner")));
             }
             // Возвращаем наш список
             return products;
@@ -97,7 +98,8 @@ public class DbHandler {
                         resultSet.getString("title"),
                         resultSet.getString("author"),
                         resultSet.getString("key_"),
-                        resultSet.getString("date_")));
+                        resultSet.getString("date_"),
+                        resultSet.getString("owner")));
             }
             // Возвращаем наш список
             return products.get(0);
@@ -115,36 +117,38 @@ public class DbHandler {
                 " title TEXT NOT NULL, " +
                 " author TEXT NOT NULL, " +
                 " key_ TEXT NOT NULL," +
-                " date_ TEXT NOT NULL);";
+                " date_ TEXT NOT NULL," +
+                " owner TEXT NOT NULL );";
 
         PreparedStatement statemen = connection.prepareStatement(sql);
+        statemen.execute();
+        sql = "CREATE TABLE IF NOT EXISTS users " +
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                " username TEXT NOT NULL, " +
+                " password TEXT NOT NULL);";
+        statemen = connection.prepareStatement(sql);
         statemen.execute();
     }
 
     public int addArticle(Article article) {
         int t = -1;
+        int val =  new Random().nextInt(999999999);
         // Создадим подготовленное выражение, чтобы избежать SQL-инъекций
         try (PreparedStatement statement = this.connection.prepareStatement(
-                "INSERT INTO articles(`title`, `author`, `key_`, `date_`) " +
-                        "VALUES(?, ?, ?, ?)")) {
-            statement.setObject(1, article.getTitle());
-            statement.setObject(2, article.getAuthor());
-            statement.setObject(3, " " + article.getKeyWords() + " ");
-            statement.setObject(4, article.getDate());
+                "INSERT INTO articles(`id`, `title`, `author`, `key_`, `date_`, `owner`) " +
+                        "VALUES(?, ?, ?, ?, ?, ?)")) {
+            statement.setObject(1, val);
+            statement.setObject(2, article.getTitle());
+            statement.setObject(3, article.getAuthor());
+            statement.setObject(4, " " + article.getKeyWords() + " ");
+            statement.setObject(5, article.getDate());
+            statement.setObject(6, article.getOwner());
             // Выполняем запрос
             statement.execute();
-            Statement statement1 = this.connection.createStatement();
-            ResultSet resultSet = statement1.executeQuery("SELECT * FROM articles WHERE title='"
-                    + article.getTitle() + "' and author='" + article.getAuthor() + "' and date_='" + article.getDate()
-                    + "' and key_=' " + article.getKeyWords() + " ';");
-
-            while (resultSet.next()) {
-                t = resultSet.getInt("id");
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return t;
+        return val;
     }
 
     // Удаление продукта по id
@@ -158,5 +162,34 @@ public class DbHandler {
 
     public int getArticles(String title, String author, String key, String date) {
         return 0;
+    }
+    public User getUser(User user) {
+        try (Statement statement = this.connection.createStatement()) {
+            User item = null;
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM users where username = '" + user.getUsername() + "'" +
+                    " and password = '"+user.getPassword()+"';");
+            while (resultSet.next()) {
+                item = new User(resultSet.getInt("id"),
+                        resultSet.getString("username"),
+                        resultSet.getString("password"));
+            }
+            return item;
+        } catch (Exception e) {
+            // Если произошла ошибка - возвращаем пустую коллекцию
+            return null;
+        }
+    }
+
+    public void addUser(User user) {
+        try (PreparedStatement statement = this.connection.prepareStatement(
+                "INSERT INTO users(`username`, `password`) " +
+                        "VALUES(?, ?)")) {
+            statement.setObject(1, user.getUsername());
+            statement.setObject(2, user.getPassword());
+            statement.execute();
+            // Выполняем запрос
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
