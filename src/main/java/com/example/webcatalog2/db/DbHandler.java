@@ -132,7 +132,7 @@ public class DbHandler {
 
     public int addArticle(Article article) {
         int t = -1;
-        int val =  new Random().nextInt(999999999);
+        int val = new Random().nextInt(999999999);
         // Создадим подготовленное выражение, чтобы избежать SQL-инъекций
         try (PreparedStatement statement = this.connection.prepareStatement(
                 "INSERT INTO articles(`id`, `title`, `author`, `key_`, `date_`, `owner`) " +
@@ -163,11 +163,12 @@ public class DbHandler {
     public int getArticles(String title, String author, String key, String date) {
         return 0;
     }
+
     public User getUser(User user) {
         try (Statement statement = this.connection.createStatement()) {
             User item = null;
             ResultSet resultSet = statement.executeQuery("SELECT * FROM users where username = '" + user.getUsername() + "'" +
-                    " and password = '"+user.getPassword()+"';");
+                    " and password = '" + user.getPassword() + "';");
             while (resultSet.next()) {
                 item = new User(resultSet.getInt("id"),
                         resultSet.getString("username"),
@@ -188,6 +189,14 @@ public class DbHandler {
             statement.setObject(2, user.getPassword());
             statement.execute();
             // Выполняем запрос
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(String id) {
+        try (PreparedStatement statement = connection.prepareStatement("DELETE FROM articles where id = " + id + ";")) {
+            statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }

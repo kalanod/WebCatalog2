@@ -163,8 +163,8 @@
     </ul>
 </nav>
 <%} else {%>
-
-<form class="row g-3" action="${pageContext.request.contextPath}/login" method="post">
+<div style="width: 100%; height: 100%">
+<form class="row g-3" action="${pageContext.request.contextPath}/login" method="post" style="display: block; margin-left: auto; margin-right: auto; width: 20%">
     <div class="col-auto">
         <input type="text" class="form-control" name="username" id="usenameInput" placeholder="">
         <label for="usenameInput">Username</label>
@@ -177,6 +177,7 @@
         <button type="submit" class="login close btn btn-primary">Добавить</button>
     </div>
 </form>
+</div>
 <%}%>
 <script src="js/jquery-3.7.1.min.js"></script>
 <script>

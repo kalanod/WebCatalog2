@@ -57,6 +57,9 @@ public class DataAdapter {
     public static int saveFile(String title, String author, String key, String date, String id){
         return dbHandler.addArticle(new Article(title, author, key, date, id));
     }
+    public static void delete(String id){
+        dbHandler.delete(id);
+    }
 
     public static int getLinesCount(String page, String title, String author, String key, String date) {
         return getLinesAll(page, title, author, key, date).size();

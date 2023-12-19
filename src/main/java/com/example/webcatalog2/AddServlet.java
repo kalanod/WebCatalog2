@@ -33,7 +33,6 @@ public class AddServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String description = req.getParameter("description"); // Retrieves <input type="text" name="description">
         Part filePart = req.getPart("file"); // Retrieves <input type="file" name="file">
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString(); // MSIE fix.
         if (!fileName.split("\\.")[1].equals("pdf")){

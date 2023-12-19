@@ -1,5 +1,6 @@
 <%@ page import="com.example.webcatalog2.Adapters.DataAdapter" %>
-<%@ page import="com.example.webcatalog2.Model.Article" %><%--
+<%@ page import="com.example.webcatalog2.Model.Article" %>
+<%@ page import="com.example.webcatalog2.db.User" %><%--
   Created by IntelliJ IDEA.
   User: yaidf
   Date: 15.12.2023
@@ -32,6 +33,10 @@
     <h2 class="keyWords">Владелец: <%=article.getOwner()%>
     <a href="<%=request.getContextPath()%>/download?id=<%=request.getParameter("id")%>"
        class="btn btn-primary">скачать</a>
+        <% if (article.getOwner().equals(((User)request.getSession().getAttribute("User")).getUsername())){%>
+        <a href="<%=request.getContextPath()%>/del?id=<%=request.getParameter("id")%>"
+           class="btn btn-primary">уничтожить</a>
+        <%}%>
 </div>
 <script>
     <jsp:include page="js/index.js"/>
